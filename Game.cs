@@ -27,7 +27,7 @@ namespace Hangman
                     Console.WriteLine("\nHINT!");
                     Console.WriteLine("\nThe capital of " + countryHint);
                 }
-                capitalWithTypedLetters = capitalWithTypedLetters();
+                capitalWithTypedLetters = getCapitalWithTypedLetters();
                 Console.WriteLine("\n"+ capitalWithTypedLetters);
 
                 if(checkIfWin()){
@@ -38,9 +38,10 @@ namespace Hangman
                 if(!typedLetters.Contains(userInput)){
                     typedLetters.Add(userInput);
                 }
-               
-        
-                player.setLife(0);
+
+                if(!checkGuess(userInput)){
+                    player.setLife(player.getLife()-1);
+                }
             }
         }
 
@@ -92,7 +93,7 @@ namespace Hangman
             return Char.ToUpper(input);
         }
 
-        public string capitalWithTypedLetters(){
+        public string getCapitalWithTypedLetters(){
             StringBuilder sb = new StringBuilder(dashCapital);
             for(int i = 0; i < typedLetters.Count; i++){
                 for(int j = 0; j < capital.Length; j++){
@@ -113,6 +114,16 @@ namespace Hangman
                 return true;
             }
             return false;
+        }
+
+        public bool checkGuess(char guess){
+            bool validGuess = false;
+            foreach(char c in capital){
+                if(c == guess){
+                    validGuess = true;
+                }
+            }
+            return validGuess;
         }
     }
 }
