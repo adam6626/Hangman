@@ -9,15 +9,20 @@ namespace Hangman
         private string nick;
         private string capital;
         private string countryHint;
-        
+        private string dashCapital;
+
         public void start(){
             Console.Write("\nEnter your name: ");
             nick = Console.ReadLine();
             Player player = new Player(nick);
             randomCapitalSelection();
+            dashCapital = convertStrToDash(capital);
 
-            if(player.getLife() > 0){
-                 Console.WriteLine("\nHello world " + capital + " " + countryHint);
+            while(player.getLife() > 0){
+                 Console.WriteLine("\nYour life: " + player.getLife());
+                 Console.WriteLine("\nCapital " + capital);
+                 Console.WriteLine("\nDash Capital " + dashCapital);
+                 player.setLife(0)
             }
         }
 
@@ -47,6 +52,20 @@ namespace Hangman
             
             this.capital = randomCapital;
             this.countryHint = countryHint;
+        }
+
+        public string convertStrToDash(string word){
+            char[] dashWord = new char[word.Length];
+
+            for (int i = 0; i < word.Length; i++) {
+                if(word[i] == ' '){
+                    dashWord[i] = ' ';
+                }else{
+                    dashWord[i] = '_';
+                }
+            }
+            string dashString = new string(dashWord);
+            return dashString;
         }
     }
 }
