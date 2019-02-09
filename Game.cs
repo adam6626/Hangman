@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Hangman
 {
@@ -10,6 +11,7 @@ namespace Hangman
         private string capital;
         private string countryHint;
         private string dashCapital;
+        private List<char> typedLetters = new List<char>();
 
         public void start(){
             Console.Write("\nEnter your name: ");
@@ -17,12 +19,18 @@ namespace Hangman
             Player player = new Player(nick);
             randomCapitalSelection();
             dashCapital = convertStrToDash(capital);
-
-            while(player.getLife() > 0){
-                 Console.WriteLine("\nYour life: " + player.getLife());
-                 Console.WriteLine("\nCapital " + capital);
-                 Console.WriteLine("\nDash Capital " + dashCapital);
-                 player.setLife(0)
+            int l = 10;
+            while(l > 0){
+                Console.WriteLine("\nYour life: " + player.getLife());
+                Console.WriteLine("\nCapital " + capital);
+                Console.WriteLine("\nDash Capital " + dashCapital);
+                char userInput = userGuess();
+                if(!typedLetters.Contains(userInput)){
+                    typedLetters.Add(userInput);
+                }
+                Console.WriteLine(capitalWithTypedLetters());
+                --l;
+                player.setLife(0);
             }
         }
 
@@ -67,5 +75,26 @@ namespace Hangman
             string dashString = new string(dashWord);
             return dashString;
         }
+
+        public char userGuess(){
+            Console.Write("\nEnter a letter: ");
+            char input = Console.ReadKey().KeyChar;
+            return Char.ToUpper(input);
+        }
+
+        public string capitalWithTypedLetters(){
+            StringBuilder sb = new StringBuilder(dashCapital);
+            for(int i = 0; i < typedLetters.Count; i++){
+                for(int j = 0; j < capital.Length; j++){
+                    if(typedLetters[i] == capital[j]){
+                        sb[j] = typedLetters[i];
+                    }
+                }
+            }
+            string capitalWithGuessLetters = sb.ToString();
+            return capitalWithGuessLetters;
+        }
+
+        
     }
 }
