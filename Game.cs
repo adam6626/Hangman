@@ -12,6 +12,7 @@ namespace Hangman
         private string countryHint;
         private string dashCapital;
         private List<char> typedLetters = new List<char>();
+        private string capitalWithTypedLetters;
 
         public void start(){
             Console.Write("\nEnter your name: ");
@@ -19,17 +20,26 @@ namespace Hangman
             Player player = new Player(nick);
             randomCapitalSelection();
             dashCapital = convertStrToDash(capital);
-            int l = 10;
-            while(l > 0){
+
+            while(player.getLife() > 0){
                 Console.WriteLine("\nYour life: " + player.getLife());
-                Console.WriteLine("\nCapital " + capital);
-                Console.WriteLine("\nDash Capital " + dashCapital);
+                if(player.getLife() == 1){
+                    Console.WriteLine("\nHINT!");
+                    Console.WriteLine("\nThe capital of " + countryHint);
+                }
+                capitalWithTypedLetters = capitalWithTypedLetters();
+                Console.WriteLine("\n"+ capitalWithTypedLetters);
+
+                if(checkIfWin()){
+                    break;
+                }
+
                 char userInput = userGuess();
                 if(!typedLetters.Contains(userInput)){
                     typedLetters.Add(userInput);
                 }
-                Console.WriteLine(capitalWithTypedLetters());
-                --l;
+               
+        
                 player.setLife(0);
             }
         }
@@ -95,6 +105,14 @@ namespace Hangman
             return capitalWithGuessLetters;
         }
 
-        
+        public bool checkIfWin(){
+            if(capital.Equals(capitalWithTypedLetters)){
+                Console.Clear();
+                Console.WriteLine("\nCONGRATULATIONS, YOU WIN!!!");
+                Console.WriteLine("\nThe password was " + capital);
+                return true;
+            }
+            return false;
+        }
     }
 }
