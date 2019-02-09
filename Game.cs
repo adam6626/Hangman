@@ -32,13 +32,15 @@ namespace Hangman
 
                 if(checkIfWin()){
                     break;
+                }else if(!wordOrLetter()){
+                    char userInput = userGuess();
+                        
+                    if(!typedLetters.Contains(userInput)){
+                        typedLetters.Add(userInput);
+                    }else{
+                        continue;
+                    }
                 }
-
-                char userInput = userGuess();
-                if(!typedLetters.Contains(userInput)){
-                    typedLetters.Add(userInput);
-                }
-
                 if(!checkGuess(userInput)){
                     player.setLife(player.getLife()-1);
                 }
@@ -124,6 +126,25 @@ namespace Hangman
                 }
             }
             return validGuess;
+        }
+
+        public bool wordOrLetter(){
+            bool choosedOption = false;
+            char wordOrLetter;
+            char wordOrLetterUpper;
+            do{
+                Console.Write("\nDo you want to guess whole word[W] or one letter[L]: ");
+                wordOrLetter = Console.ReadKey().KeyChar;
+                wordOrLetterUpper = Char.ToUpper(wordOrLetter);
+                if(wordOrLetterUpper == 'W'){
+                    choosedOption = true;
+                }else if (wordOrLetterUpper == 'L'){
+                    choosedOption = false;
+                }else{
+                    Console.WriteLine("\nPlease enter only W or L.");
+                }
+            }while(wordOrLetterUpper!='W' && wordOrLetterUpper!='L');
+            return choosedOption;
         }
     }
 }
