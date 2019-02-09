@@ -13,6 +13,7 @@ namespace Hangman
         private string dashCapital;
         private List<char> typedLetters = new List<char>();
         private string capitalWithTypedLetters;
+        private string wordGuess;
 
         public void start(){
             Console.Write("\nEnter your name: ");
@@ -43,6 +44,14 @@ namespace Hangman
                 }
                 if(!checkGuess(userInput)){
                     player.setLife(player.getLife()-1);
+                }else{
+                    wordGuess = wholeWordGuess();
+                    if(checkIfWin()){
+                        break;
+                    }else{
+                        player.setLife(player.getLife()-2);
+                        continue;
+                    }
                 }
             }
         }
@@ -145,6 +154,12 @@ namespace Hangman
                 }
             }while(wordOrLetterUpper!='W' && wordOrLetterUpper!='L');
             return choosedOption;
+        }
+
+        public string wholeWordGuess(){
+            Console.Write("\nEnter a word: ");
+            string input = Console.ReadLine();
+            return input.ToUpper();
         }
     }
 }
