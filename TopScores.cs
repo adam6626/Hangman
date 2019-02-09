@@ -1,0 +1,6 @@
+namespace Hangman
+{
+    class TopScores{
+        
+    }
+}
