@@ -11,11 +11,11 @@ namespace Hangman
         private string capital;
         private string countryHint;
         private string dashCapital;
-        private List<char> typedLetters = new List<char>();
         private string capitalWithTypedLetters;
         private string wordGuess;
 
         public void start(){
+            List<char> typedLetters = new List<char>();
             Console.Write("\nEnter your name: ");
             nick = Console.ReadLine();
             Player player = new Player(nick);
@@ -28,10 +28,10 @@ namespace Hangman
                     Console.WriteLine("\nHINT!");
                     Console.WriteLine("\nThe capital of " + countryHint);
                 }
-                capitalWithTypedLetters = getCapitalWithTypedLetters();
+                capitalWithTypedLetters = getCapitalWithTypedLetters(typedLetters);
                 Console.WriteLine("\n"+ capitalWithTypedLetters);
 
-                if(checkIfWin()){
+                if(checkIfWin(capitalWithTypedLetters)){
                     break;
                 }else if(!wordOrLetter()){
                     char userInput = userGuess();
@@ -41,12 +41,13 @@ namespace Hangman
                     }else{
                         continue;
                     }
-                }
-                if(!checkGuess(userInput)){
-                    player.setLife(player.getLife()-1);
+                    if(!checkGuess(userInput)){
+                        player.setLife(player.getLife()-1);
+                    }
+                
                 }else{
                     wordGuess = wholeWordGuess();
-                    if(checkIfWin()){
+                    if(checkIfWin(wordGuess)){
                         break;
                     }else{
                         player.setLife(player.getLife()-2);
@@ -54,6 +55,7 @@ namespace Hangman
                     }
                 }
             }
+            playAgain();
         }
 
         public void randomCapitalSelection(){
@@ -104,21 +106,21 @@ namespace Hangman
             return Char.ToUpper(input);
         }
 
-        public string getCapitalWithTypedLetters(){
+        public string getCapitalWithTypedLetters(List<char> letters){
             StringBuilder sb = new StringBuilder(dashCapital);
-            for(int i = 0; i < typedLetters.Count; i++){
+            for(int i = 0; i < letters.Count; i++){
                 for(int j = 0; j < capital.Length; j++){
-                    if(typedLetters[i] == capital[j]){
-                        sb[j] = typedLetters[i];
+                    if(letters[i] == capital[j]){
+                        sb[j] = letters[i];
                     }
                 }
             }
             string capitalWithGuessLetters = sb.ToString();
             return capitalWithGuessLetters;
         }
-
-        public bool checkIfWin(){
-            if(capital.Equals(capitalWithTypedLetters)){
+        
+        public bool checkIfWin(string guess){
+            if(capital.Equals(guess)){
                 Console.Clear();
                 Console.WriteLine("\nCONGRATULATIONS, YOU WIN!!!");
                 Console.WriteLine("\nThe password was " + capital);
@@ -160,6 +162,23 @@ namespace Hangman
             Console.Write("\nEnter a word: ");
             string input = Console.ReadLine();
             return input.ToUpper();
+        }
+
+        public void playAgain(){
+            char playAgain;
+            char playAgainUpper;
+            do{
+                Console.Write("\nDo you want to play again ? [Y/N]: ");
+                playAgain = Console.ReadKey().KeyChar;
+                playAgainUpper = Char.ToUpper(playAgain);
+                if (playAgainUpper=='Y'){
+                    start();
+                }else if (playAgainUpper=='N'){
+                    Environment.Exit(0);
+                }else{
+                    Console.WriteLine("\nPlease enter only y or n.");
+                }
+            }while(playAgainUpper!='Y' && playAgainUpper!='N');
         }
     }
 }
