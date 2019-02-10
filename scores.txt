@@ -1,2 +1,5 @@
-
-adsfa	|	36	|	16
+nickname | time | attempts
+op	|	22	|	13
+is	|	22	|	13
+mmm	|	12	|	17
+2222	|	10	|	11

@@ -14,7 +14,8 @@ namespace Hangman
         private string dashCapital;
         private string capitalWithTypedLetters;
         private string wordGuess;
-        TopScores topScores = new TopScores();
+        
+        View view = new View();
 
         public void start(){
             List<char> typedLetters = new List<char>();
@@ -23,6 +24,7 @@ namespace Hangman
             Console.Write("\nEnter your name: ");
             nick = Console.ReadLine();
             Player player = new Player(nick);
+            TopScores topScores = new TopScores();
             randomCapitalSelection();
             dashCapital = convertStrToDash(capital);
             timer.Start();
@@ -39,7 +41,7 @@ namespace Hangman
                 if(checkIfWin(capitalWithTypedLetters)){
                     timer.Stop();
                     player.setTime(timer.ElapsedMilliseconds/dividerMillisecToSec);
-                    saveScoreToFile(player.getNick(), player.getTime(), player.getAttempts());
+                    //saveScoreToFile(player.getNick(), player.getTime(), player.getAttempts());
                     break;
                 }else if(!wordOrLetter()){
                     char userInput = userGuess();
@@ -60,7 +62,7 @@ namespace Hangman
                     if(checkIfWin(wordGuess)){
                         timer.Stop();
                         player.setTime(timer.ElapsedMilliseconds/dividerMillisecToSec);
-                        saveScoreToFile(player.getNick(), player.getTime(), player.getAttempts());
+                        //saveScoreToFile(player.getNick(), player.getTime(), player.getAttempts());
                         break;
                     }else{
                         player.setLife(player.getLife()-2);
@@ -68,7 +70,9 @@ namespace Hangman
                     }
                 }
             }
+            saveScoreToFile(player.getNick(), player.getTime(), player.getAttempts());
             topScores.topPlayers();
+            view.topPlayers(topScores.bestPlayerSort());
             playAgain();
         }
 
