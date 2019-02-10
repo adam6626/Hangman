@@ -21,6 +21,8 @@ namespace Hangman
             List<char> typedLetters = new List<char>();
             Stopwatch timer = new Stopwatch();
             int dividerMillisecToSec = 1000;
+            view.header();
+            view.preGameInfo();
             Console.Write("\nEnter your name: ");
             nick = Console.ReadLine();
             Player player = new Player(nick);
@@ -71,8 +73,9 @@ namespace Hangman
                         continue;
                     }
                 }
+            }if(player.getTime() != 0){
+                saveScoreToFile(player.getNick(), player.getTime(), player.getAttempts());
             }
-            saveScoreToFile(player.getNick(), player.getTime(), player.getAttempts());
             topScores.topPlayers();
             view.topPlayers(topScores.bestPlayerSort());
             playAgain();

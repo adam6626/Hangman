@@ -150,5 +150,30 @@ namespace Hangman
             Console.WriteLine("\nHINT!");
             Console.WriteLine("\nThe capital of " + country);
         }
+
+        public void preGameInfo(){
+            Console.WriteLine("\nWelcome in the hangman game");
+            Console.WriteLine("\nYou have to guess a random choosed capital of some country");
+            Console.WriteLine("\nYou have 10 lifes");
+            Console.WriteLine("\nWrong letter guess takes one life");
+            Console.WriteLine("and wrong word guess takes two lifes");
+            Console.WriteLine("\nPress Enter to continue");
+            Console.ReadKey();
+            Console.Clear();
+        }
+
+        public void header(){
+            Console.WriteLine("888");                                                           
+            Console.WriteLine("888");                                                           
+            Console.WriteLine("888");                                                           
+            Console.WriteLine("88888b.   8888b. .88888b. .d88bBB. 888b.88b.888b.  8888b. .88888b.");
+            Console.WriteLine("888  88b      88 b88   88 bd8  88P 88b  888  8b8       88 b88   88");
+            Console.WriteLine("888  888.d888888 888   88 888   88 88    8    88. d888888 888   88");
+            Console.WriteLine("888  888 888  88 888   88 Y88b  88 88         88  888  88 888   88");
+            Console.WriteLine("888  888  Y88888 888   88   Y88888 88         88   Y88888 888   88");
+            Console.WriteLine("                               888                              ");
+            Console.WriteLine("                          Y8b d88P                              ");
+            Console.WriteLine("                            Y88P     ");
+        }
     }
 }
