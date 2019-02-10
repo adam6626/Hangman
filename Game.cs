@@ -32,8 +32,7 @@ namespace Hangman
             while(player.getLife() > 0){
                 Console.WriteLine("\nYour life: " + player.getLife());
                 if(player.getLife() == 1){
-                    Console.WriteLine("\nHINT!");
-                    Console.WriteLine("\nThe capital of " + countryHint);
+                    view.printCountryHint(countryHint);
                 }
                 capitalWithTypedLetters = getCapitalWithTypedLetters(typedLetters);
                 Console.WriteLine("\n"+ capitalWithTypedLetters);
@@ -41,7 +40,6 @@ namespace Hangman
                 if(checkIfWin(capitalWithTypedLetters)){
                     timer.Stop();
                     player.setTime(timer.ElapsedMilliseconds/dividerMillisecToSec);
-                    //saveScoreToFile(player.getNick(), player.getTime(), player.getAttempts());
                     break;
                 }else if(!wordOrLetter()){
                     char userInput = userGuess();
@@ -50,22 +48,26 @@ namespace Hangman
                         typedLetters.Add(userInput);
                         player.setAttempts(player.getAttempts()+1);
                     }else{
+                        view.printIfLetterAlreadyEntered(userInput);
                         continue;
                     }
                     if(!checkGuess(userInput)){
                         player.setLife(player.getLife()-1);
+                        view.printIfLetterNotInWord(userInput);
+                        view.hangmanArt(player.getLife(), capital);
+                    }else{
+                        view.printIfLetterInWord(userInput);
                     }
-                
                 }else{
                     wordGuess = wholeWordGuess();
                     player.setAttempts(player.getAttempts()+1);
                     if(checkIfWin(wordGuess)){
                         timer.Stop();
                         player.setTime(timer.ElapsedMilliseconds/dividerMillisecToSec);
-                        //saveScoreToFile(player.getNick(), player.getTime(), player.getAttempts());
                         break;
                     }else{
                         player.setLife(player.getLife()-2);
+                        view.hangmanArt(player.getLife(), capital);
                         continue;
                     }
                 }
