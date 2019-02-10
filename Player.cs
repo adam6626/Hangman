@@ -5,12 +5,14 @@ namespace Hangman
     class Player{
 
         private string nick;
-        private int score;
+        private int attempts;
+        private long time;
         private int life;
 
         public Player(string playerName){
             nick = playerName;
-            score = 0;
+            attempts = 0;
+            time = 0;
             life = 10;
         }
 
@@ -22,20 +24,28 @@ namespace Hangman
             this.nick = nick;
         }
 
-        public int getScore(){
-            return score;
-        }
-
-        public void setScore(int score){
-            this.score = score;
-        }
-
-          public int getLife(){
+        public int getLife(){
             return life;
         }
 
         public void setLife(int life){
             this.life = life;
+        }
+
+        public void setAttempts(int attempts){
+            this.attempts = attempts;
+        }
+
+         public int getAttempts(){
+            return attempts;
+        }
+
+        public void setTime(long time){
+            this.time = time;
+        }
+
+         public long getTime(){
+            return time;
         }
     }
 }

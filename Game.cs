@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics;
 
 namespace Hangman
 {
@@ -16,11 +17,14 @@ namespace Hangman
 
         public void start(){
             List<char> typedLetters = new List<char>();
+            Stopwatch timer = new Stopwatch();
+            int dividerMillisecToSec = 1000;
             Console.Write("\nEnter your name: ");
             nick = Console.ReadLine();
             Player player = new Player(nick);
             randomCapitalSelection();
             dashCapital = convertStrToDash(capital);
+            timer.Start();
 
             while(player.getLife() > 0){
                 Console.WriteLine("\nYour life: " + player.getLife());
@@ -32,12 +36,15 @@ namespace Hangman
                 Console.WriteLine("\n"+ capitalWithTypedLetters);
 
                 if(checkIfWin(capitalWithTypedLetters)){
+                    timer.Stop();
+                    player.setTime(timer.ElapsedMilliseconds/dividerMillisecToSec);
                     break;
                 }else if(!wordOrLetter()){
                     char userInput = userGuess();
                         
                     if(!typedLetters.Contains(userInput)){
                         typedLetters.Add(userInput);
+                        player.setAttempts(player.getAttempts()+1);
                     }else{
                         continue;
                     }
@@ -47,7 +54,10 @@ namespace Hangman
                 
                 }else{
                     wordGuess = wholeWordGuess();
+                    player.setAttempts(player.getAttempts()+1);
                     if(checkIfWin(wordGuess)){
+                        timer.Stop();
+                        player.setTime(timer.ElapsedMilliseconds/dividerMillisecToSec);
                         break;
                     }else{
                         player.setLife(player.getLife()-2);
@@ -55,6 +65,7 @@ namespace Hangman
                     }
                 }
             }
+            Console.WriteLine(player.getTime() + "  " + player.getAttempts());
             playAgain();
         }
 
