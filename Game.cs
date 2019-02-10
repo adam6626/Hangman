@@ -14,6 +14,7 @@ namespace Hangman
         private string dashCapital;
         private string capitalWithTypedLetters;
         private string wordGuess;
+        TopScores topScores = new TopScores();
 
         public void start(){
             List<char> typedLetters = new List<char>();
@@ -38,6 +39,7 @@ namespace Hangman
                 if(checkIfWin(capitalWithTypedLetters)){
                     timer.Stop();
                     player.setTime(timer.ElapsedMilliseconds/dividerMillisecToSec);
+                    saveScoreToFile(player.getNick(), player.getTime(), player.getAttempts());
                     break;
                 }else if(!wordOrLetter()){
                     char userInput = userGuess();
@@ -58,6 +60,7 @@ namespace Hangman
                     if(checkIfWin(wordGuess)){
                         timer.Stop();
                         player.setTime(timer.ElapsedMilliseconds/dividerMillisecToSec);
+                        saveScoreToFile(player.getNick(), player.getTime(), player.getAttempts());
                         break;
                     }else{
                         player.setLife(player.getLife()-2);
@@ -65,7 +68,7 @@ namespace Hangman
                     }
                 }
             }
-            Console.WriteLine(player.getTime() + "  " + player.getAttempts());
+            topScores.topPlayers();
             playAgain();
         }
 
@@ -190,6 +193,12 @@ namespace Hangman
                     Console.WriteLine("\nPlease enter only y or n.");
                 }
             }while(playAgainUpper!='Y' && playAgainUpper!='N');
+        }
+
+        public void saveScoreToFile(string name, long time, int attempts){
+            using (TextWriter writer = new StreamWriter("scores.txt", true)){
+                writer.Write("\n" + name +  "\t|\t" + time + "\t|\t" + attempts);
+            }
         }
     }
 }
